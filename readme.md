@@ -29,4 +29,8 @@ ruby ./app/main.rb
 
 ## Legal
 
-Copyright details declared in </UNLICENSE> file.
+Copyright details declared in [UNLICENSE] file.
+
+[UNLICENSE]:
+  </UNLICENSE>
+  
