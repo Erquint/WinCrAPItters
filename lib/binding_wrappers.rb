@@ -36,6 +36,13 @@ module WinAPI
       SetConsoleMode.call(handle, mode).zero?
   end
   
+  Set_console_cursor_info = API.new('SetConsoleCursorInfo', 'IS')
+  def set_console_cursor_info handle, size, visibility
+    console_cursor_info = [size, visibility.to_i].pack('LC')
+    raise('SetConsoleCursorInfo → zero!', cause: Exception.new(get_last_error)) if
+      Set_console_cursor_info.call(Stdout_handle, console_cursor_info).zero?
+  end
+  
   ReadConsoleInput = API.new('ReadConsoleInput', 'ISIS')
   def read_console_input handle
     input_length = 1

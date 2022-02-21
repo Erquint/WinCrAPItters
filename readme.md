@@ -33,4 +33,3 @@ Copyright details declared in [UNLICENSE] file.
 
 [UNLICENSE]:
   </UNLICENSE>
-  

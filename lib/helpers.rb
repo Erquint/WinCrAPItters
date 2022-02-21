@@ -119,3 +119,15 @@ class Hash
   end
   alias :flagbits :flags_by_bitfield
 end
+
+class FalseClass
+  def to_i
+    return 0
+  end
+end
+
+class TrueClass
+  def to_i
+    return 1
+  end
+end

@@ -15,8 +15,6 @@ Predator_count = 5
 $footer = "Try #{Rainbow('ruby ./main.rb --period 0').yellow} (or #{Rainbow('-p 0').yellow}) for unlimited speed.\n" +
   "Exit by issuing an interrupt signal using #{Rainbow('[Ctrl]+[C]').yellow}.\n"
 
-Set_console_cursor_info = API.new('SetConsoleCursorInfo', 'IS')
-
 class Critter
   # Character = Character
   
@@ -209,9 +207,7 @@ begin
   Sim_turn = Periodic.new Period
   STDOUT.erase_screen 2
   
-  
-  raise('SetConsoleCursorInfo → zero!', cause: Exception.new(get_last_error)) if
-    Set_console_cursor_info.call(Stdout_handle, [25, 0].pack('IC')).zero?
+  set_console_cursor_info Stdout_handle, 25, false
   
   while Sim_turn.wait
     Field.print
@@ -221,7 +217,5 @@ ensure
   STDOUT.goto 0, 0
   STDOUT.erase_screen 2
   puts $footer
-  raise('SetConsoleCursorInfo → zero!', cause: Exception.new(get_last_error)) if
-    Set_console_cursor_info.call(Stdout_handle, [25, 1].pack('IC')).zero?
-  # exit
+  set_console_cursor_info Stdout_handle, 25, true
 end
