@@ -1,5 +1,6 @@
 # ENCODING: UTF-8
 
+require './lib/helpers.rb'
 require './lib/header.rb'
 require_gem 'win32-api', 'win32/api'
 include Win32
@@ -11,7 +12,7 @@ module WinAPI
     return {
       int: error,
       hex: [error].pack(?L).binhex,
-      message: WinError.key_by_value(error)
+      message: WinError.key(error)
     }
   end
   
@@ -43,6 +44,14 @@ module WinAPI
       Set_console_cursor_info.call(Stdout_handle, console_cursor_info).zero?
   end
   
+  Get_number_of_console_input_events = API.new('GetNumberOfConsoleInputEvents', 'IS')
+  def get_number_of_console_input_events handle
+    long = 0.chr * 4
+    raise('GetNumberOfConsoleInputEvents → zero!', cause: Exception.new(get_last_error)) if
+      Get_number_of_console_input_events.call(handle, long).zero?
+    return long.unpack1('L')
+  end
+  
   ReadConsoleInput = API.new('ReadConsoleInput', 'ISIS')
   def read_console_input handle
     input_length = 1
@@ -62,7 +71,7 @@ module WinAPI
       wVirtualKeyCode_b = buffer.slice!(0, 2)
       wVirtualKeyCode_i = wVirtualKeyCode_b.unpack1(?S)
       wVirtualKeyCode_h = wVirtualKeyCode_b.binhex(2)
-      wVirtualKeyCode_s = WinUser_Virtual_Key_Codes.key_by_value wVirtualKeyCode_i
+      wVirtualKeyCode_s = WinUser_Virtual_Key_Codes.key wVirtualKeyCode_i
       wVirtualScanCode = buffer.binhex!(2)
       wUnicodeChar = buffer.slice!(0, 2)
       dwControlKeyState_b = buffer.slice!(0, 4)
@@ -74,6 +83,7 @@ module WinAPI
         key_down: !bKeyDown.zero?,
         repeat_count: wRepeatCount,
         virtual_key_code: {
+          int: wVirtualKeyCode_i,
           hex: wVirtualKeyCode_h,
           string: wVirtualKeyCode_b,
           name: wVirtualKeyCode_s
@@ -135,23 +145,3 @@ module WinAPI
   end
 end
 include WinAPI
-
-__END__
-Get_console_screen_buffer_info = API.new('GetConsoleScreenBufferInfo', 'IS')
-console_screen_buffer_info = 0.chr * [4, 4, 2, 8, 4].sum
-raise('GetConsoleScreenBufferInfo → zero!', cause: Exception.new(get_last_error)) if
-  Get_console_screen_buffer_info.call(Stdout_handle, console_screen_buffer_info).zero?
-console_screen_buffer_info = console_screen_buffer_info.unpack('a4a4Sa8a4')
-
-Set_console_cursor_position = API.new('SetConsoleCursorPosition', 'IS')
-raise('SetConsoleCursorPosition → zero!', cause: Exception.new(get_last_error)) if
-  Set_console_cursor_position.call(Stdout_handle, dwCursorPosition).zero?
-
-Get_console_cursor_info = API.new('GetConsoleCursorInfo', 'IS')
-console_cursor_info = 0.chr * [4, 1].sum
-raise('GetConsoleCursorInfo → zero!', cause: Exception.new(get_last_error)) if
-  Get_console_cursor_info.call(Stdout_handle, console_cursor_info).zero?
-console_cursor_info = console_cursor_info.unpack('LC')
-puts dwSize = console_cursor_info[0]
-puts bVisible = console_cursor_info[1]
-

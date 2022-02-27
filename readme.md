@@ -18,6 +18,9 @@
 
 ```ps1
 ruby ./app/main.rb
+ruby ./app/main.rb --period 0
+ruby ./app/main.rb -p 0
+ruby ./app/input_reader.rb
 ```
 
 ## Tested on

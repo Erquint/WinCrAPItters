@@ -1,8 +1,6 @@
 # ENCODING: UTF-8
 
-require './lib/helpers.rb'
 require './lib/binding_wrappers.rb'
-require_gem 'rainbow'
 
 Sep = Rainbow(?→).yellow
 S_sep = ' %s ' % Rainbow(?→).yellow
@@ -12,10 +10,10 @@ P_end = Rainbow(?)).yellow
 Stdin_handle = get_std_handle WinBase_Handle_ID[:STD_INPUT_HANDLE]
 Old_console_mode = get_console_mode Stdin_handle
 New_console_mode = (
-    Old_console_mode |
-    WinCon_Input_Mode[:ENABLE_WINDOW_INPUT] |
-    WinCon_Input_Mode[:ENABLE_MOUSE_INPUT]
-  ) & ~WinCon_Input_Mode[:ENABLE_QUICK_EDIT_MODE]
+  Old_console_mode |
+  WinCon_Input_Mode[:ENABLE_WINDOW_INPUT] |
+  WinCon_Input_Mode[:ENABLE_MOUSE_INPUT]
+) & ~WinCon_Input_Mode[:ENABLE_QUICK_EDIT_MODE]
 puts "Console mode:",
   Old_console_mode.intbits(?S) + S_sep +
   WinCon_Input_Mode.flagbits(Old_console_mode).inspect,

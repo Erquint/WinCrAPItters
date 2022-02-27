@@ -1,5 +1,4 @@
-# ENCODING: UTF-8
-# DO NOT EXECUTE
+<!-- ENCODING: UTF-8 -->
 
 `irb -I . -r ./main.rb`
 
@@ -10,12 +9,53 @@ print "\e[39m"
 ```
 
 ```rb
+def to_1d x, y
+  # […]
+  # && (0...@critters.size).include?(index = x + y * @column_count)
+
+if input[:event_type] == :MOUSE_EVENT && WinCon_Mouse_Event_Flags[:MOUSE_MOVED]
+  if new_index = The_field.to_1d(*input[:position])
+    # […]
+  else selection_index = false end
+```
+
+```rb
+class String
+  def binhex size = self.size
+    raise "size #{size.inspect} isn't an integer!" unless size.is_a? Integer
+    bin = slice(0, size)
+    return bin.unpack("H*").join.upcase.unpack("a2" * bin.size).join(' ')
+  end
+end
+```
+
+```rb
 puts "#{input_records.size} / (#{output_length_i} * #{struct.size}) = " +
   "#{output_length_i.zero? ? 0 : input_records.size / (output_length_i * struct.size)}"
 # p input_records.unpack1("a#{output_length_i * struct.size}")
 trimmed_input_records = input_records.slice(0, output_length_i * struct.size)
 puts binhex trimmed_input_records
 # pretty_hex = input_records.unpack1("H#{output_length_i * struct.size * 2}")
+```
+
+```rb
+Get_console_screen_buffer_info = API.new('GetConsoleScreenBufferInfo', 'IS')
+console_screen_buffer_info = 0.chr * [4, 4, 2, 8, 4].sum
+raise('GetConsoleScreenBufferInfo → zero!', cause: Exception.new(get_last_error)) if
+  Get_console_screen_buffer_info.call(Stdout_handle, console_screen_buffer_info).zero?
+console_screen_buffer_info = console_screen_buffer_info.unpack('a4a4Sa8a4')
+
+Set_console_cursor_position = API.new('SetConsoleCursorPosition', 'IS')
+raise('SetConsoleCursorPosition → zero!', cause: Exception.new(get_last_error)) if
+  Set_console_cursor_position.call(Stdout_handle, dwCursorPosition).zero?
+
+Get_console_cursor_info = API.new('GetConsoleCursorInfo', 'IS')
+console_cursor_info = 0.chr * [4, 1].sum
+raise('GetConsoleCursorInfo → zero!', cause: Exception.new(get_last_error)) if
+  Get_console_cursor_info.call(Stdout_handle, console_cursor_info).zero?
+console_cursor_info = console_cursor_info.unpack('LC')
+puts dwSize = console_cursor_info[0]
+puts bVisible = console_cursor_info[1]
 ```
 
 Win32 API binding data type legend.
@@ -52,6 +92,11 @@ BOOL WINAPI ReadConsoleInput(
   _Out_ PINPUT_RECORD lpBuffer,
   _In_  DWORD         nLength,
   _Out_ LPDWORD       lpNumberOfEventsRead
+);
+
+BOOL WINAPI GetNumberOfConsoleInputEvents(
+  _In_  HANDLE  hConsoleInput,
+  _Out_ LPDWORD lpcNumberOfEvents
 );
 
 typedef struct _INPUT_RECORD {

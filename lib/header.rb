@@ -7,6 +7,7 @@ module WinAPI
     STD_ERROR_HANDLE:     -12,
     INVALID_HANDLE_VALUE: -1
   }
+  
   WinCon_Output_Mode = {
     ENABLE_PROCESSED_OUTPUT:            0x1,
     ENABLE_WRAP_AT_EOL_OUTPUT:          0x2,
@@ -14,6 +15,7 @@ module WinAPI
     DISABLE_NEWLINE_AUTO_RETURN:        0x8,
     ENABLE_LVB_GRID_WORLDWIDE:          0x10
   }
+  
   WinCon_Input_Mode = {
     ENABLE_PROCESSED_INPUT:        0x0001,
     ENABLE_LINE_INPUT:             0x0002,
@@ -26,6 +28,7 @@ module WinAPI
     ENABLE_AUTO_POSITION:          0x0100,
     ENABLE_VIRTUAL_TERMINAL_INPUT: 0x0200
   }
+  
   WinCon_EventType = {
     KEY_EVENT:                0x01,
     MOUSE_EVENT:              0x02,
@@ -33,6 +36,7 @@ module WinAPI
     MENU_EVENT:               0x08,
     FOCUS_EVENT:              0x10
   }
+  
   WinCon_Mouse_Button_State = {
     FROM_LEFT_1ST_BUTTON_PRESSED: 0x1,
     RIGHTMOST_BUTTON_PRESSED:     0x2,
@@ -40,12 +44,14 @@ module WinAPI
     FROM_LEFT_3RD_BUTTON_PRESSED: 0x8,
     FROM_LEFT_4TH_BUTTON_PRESSED: 0x10
   }
+  
   WinCon_Mouse_Event_Flags = {
     MOUSE_MOVED:    0x1,
     DOUBLE_CLICK:   0x2,
     MOUSE_WHEELED:  0x4,
     MOUSE_HWHEELED: 0x8
   }
+  
   WinCon_Control_Key_State = {
     RIGHT_ALT_PRESSED:   0x00000001,
     LEFT_ALT_PRESSED:    0x00000002,
@@ -65,6 +71,7 @@ module WinAPI
     ALTNUMPAD_BIT:       0x04000000,
     NLS_IME_DISABLE:     0x20000000
   }
+  
   WinUser_Virtual_Key_Codes = {
     VK_LBUTTON: 0x01,
     VK_RBUTTON: 0x02,
@@ -261,6 +268,7 @@ module WinAPI
     VK_PA1: 0xFD,
     VK_OEM_CLEAR: 0xFE
   }
+  
   WinError = {
     NO_ERROR: 0,
     ERROR_INVALID_FUNCTION: 1,
